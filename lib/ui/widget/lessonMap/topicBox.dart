@@ -16,7 +16,7 @@ class Topicbox extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.blue[400],
+        color: Theme.of(context).colorScheme.primary,
         borderRadius: BorderRadius.circular(15),
         boxShadow: [
           BoxShadow(

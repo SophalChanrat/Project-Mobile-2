@@ -1,4 +1,5 @@
 import 'package:app_mvp/ui/screens/chooseTimeScreen.dart';
+import 'package:app_mvp/ui/screens/lessonMapScreen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -14,7 +15,7 @@ void main() {
           onSurface: Color(0xFF1F2933)
         ),
       ),
-      home: Scaffold(body: Choosetimescreen()),
+      home: Scaffold(body: LessonMapScreen()),
     ),
   );
 }
