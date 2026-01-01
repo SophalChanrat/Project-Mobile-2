@@ -6,7 +6,7 @@ final uuid = Uuid();
 class Topic {
   final String topicId;
   final String topicName;
-  final int progressPercentage;
+  final double progressPercentage;
   final List<Lesson> lessons;
 
   Topic({

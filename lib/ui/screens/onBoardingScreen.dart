@@ -1,8 +1,16 @@
+import 'package:app_mvp/models/topic.dart';
+import 'package:app_mvp/router/appRouter.dart';
 import 'package:app_mvp/ui/widget/button.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class Onboardingscreen extends StatelessWidget {
-  const Onboardingscreen({super.key});
+  const Onboardingscreen({super.key, required this.topics});
+  final List<Topic> topics;
+
+  void goToChooseTime (BuildContext context) async {
+    context.go(AppRouter.chooseTimeScreen, extra: topics);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +59,7 @@ class Onboardingscreen extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 30,),
-              Button(label: "Get Started"),
+              Button(label: "Get Started", action:() => goToChooseTime(context)),
             ],
           ),
         ),

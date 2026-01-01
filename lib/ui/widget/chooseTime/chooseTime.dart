@@ -40,7 +40,7 @@ class _ChoosetimeState extends State<Choosetime> {
         mainAxisSize: MainAxisSize.min,
         children: [
           for (int i = 0; i < TimeOption.values.length; i++) ...[
-            if (i > 0) Divider(height: 1, color: Colors.black),
+            if (i > 0 && i < TimeOption.values.length) Divider(height: 1, color: Colors.black),
             TimeRow(
               timeOption: TimeOption.values[i],
               isFirst: i == 0,

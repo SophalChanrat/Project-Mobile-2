@@ -5,7 +5,7 @@ class TopicCard extends StatelessWidget {
     super.key,
     required this.topicName,
     required this.progressPercentage,
-    required this.icon,
+    this.icon = Icons.emoji_events,
   });
 
   final String topicName;
@@ -24,7 +24,7 @@ class TopicCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 10,
+      elevation: 6,
       child: ListTile(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadiusGeometry.circular(15),
@@ -45,7 +45,7 @@ class TopicCard extends StatelessWidget {
                   value: percentage,
                   minHeight: 20,
                   backgroundColor: Colors.grey[300],
-                  valueColor: const AlwaysStoppedAnimation(Colors.lightBlue),
+                  valueColor: AlwaysStoppedAnimation(Theme.of(context).colorScheme.primary),
                 ),
               ),
               Text(
