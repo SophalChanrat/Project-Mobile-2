@@ -18,7 +18,7 @@ class _LessonMapScreenState extends State<LessonMapScreen> {
         child: Center(
           child: Column(
             children: [
-              Headertopic(),
+              Headertopic(title: "Math", point: 100,),
               Padding(
                 padding: const EdgeInsets.all(16),
               ),

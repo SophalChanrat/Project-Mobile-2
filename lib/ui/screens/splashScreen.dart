@@ -1,5 +1,15 @@
-import 'package:app_mvp/ui/screens/onBoardingScreen.dart';
+import 'package:app_mvp/data/sharePreference.dart';
+import 'package:app_mvp/models/topic.dart';
+import 'package:app_mvp/router/AppRouter.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+
+final List<Topic> mockTopics = [
+  Topic(topicName: "Basics", progressPercentage: 10, lessons: []),
+  Topic(topicName: "Greetings", progressPercentage: 0.7, lessons: [],),
+  Topic(topicName: "Daily Conversation", progressPercentage: 0.2, lessons: [],),
+  Topic(topicName: "Travel", progressPercentage: 0.0, lessons: [],),
+];
 
 class Splashscreen extends StatefulWidget {
   const Splashscreen({super.key});
@@ -16,12 +26,14 @@ class _SplashscreenState extends State<Splashscreen> {
   }
 
   Future<void> _checkAndNavigate() async {
-    // Mock logic in show OnBoarding or not
-    await Future.delayed(const Duration(seconds: 2));
+    final bool isFirstOpen = await SharePreference.getFirstOpen();
+
     if (!mounted) return;
-    Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (ctx) => const Onboardingscreen()),
-    );
+    if (isFirstOpen) {
+      context.go(AppRouter.onBoardingScreen, extra: mockTopics);
+    } else {
+      context.go(AppRouter.topicScreen, extra: mockTopics);
+    }
   }
 
   @override

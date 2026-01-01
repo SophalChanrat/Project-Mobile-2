@@ -1,21 +1,22 @@
 import 'package:flutter/material.dart';
 
 class Headertopic extends StatelessWidget {
-  const Headertopic({super.key});
+  const Headertopic({super.key, required this.title, required this.point});
+  final String title;
+  final int point;
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(
-          'Math',
-          style: TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-            color: Theme.of(context).colorScheme.onSurface,
-          ),
+    return AppBar(
+      title: Text(
+        title,
+        style: TextStyle(
+          fontSize: 24,
+          fontWeight: FontWeight.bold,
+          color: Theme.of(context).colorScheme.onSurface,
         ),
+      ),
+      actions: [
         Row(
           children: [
             Icon(
@@ -25,26 +26,22 @@ class Headertopic extends StatelessWidget {
             ),
             SizedBox(width: 4),
             Text(
-              '100',
+              point.toString(),
               style: TextStyle(
                 fontSize: 16,
                 color: Theme.of(context).colorScheme.onSurface,
               ),
             ),
             SizedBox(width: 16),
-            Icon(
-              Icons.favorite,
-              color: Colors.red,
-              size: 20,
-            ),
-            SizedBox(width: 4),
-            Text(
-              '5',
-              style: TextStyle(
-                fontSize: 16,
-                color: Theme.of(context).colorScheme.onSurface,
-              ),
-            ),
+            // Icon(Icons.favorite, color: Colors.red, size: 20),
+            // SizedBox(width: 4),
+            // Text(
+            //   '5',
+            //   style: TextStyle(
+            //     fontSize: 16,
+            //     color: Theme.of(context).colorScheme.onSurface,
+            //   ),
+            // ),
           ],
         ),
       ],
