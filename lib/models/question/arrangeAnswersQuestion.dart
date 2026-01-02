@@ -1,4 +1,3 @@
-import 'package:app_mvp/models/answer.dart';
 import 'package:app_mvp/models/question/question.dart';
 
 class ArrangeAnswersQuestion extends Question {
@@ -16,9 +15,7 @@ class ArrangeAnswersQuestion extends Question {
     return ArrangeAnswersQuestion(
       qid: json['qid'] as String,
       title: json['title'] as String,
-      answers: (json['answers'] as List)
-          .map((answer) => Answer.fromJson(answer))
-          .toList(),
+      answers: [],
       items: List<String>.from(json['items']),
       correctOrder: List<String>.from(json['correctOrder']),
     );

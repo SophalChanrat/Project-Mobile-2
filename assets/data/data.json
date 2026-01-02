@@ -1,0 +1,112 @@
+{
+  "topics": [
+    {
+      "topicId": "topic-001",
+      "topicName": "Basic Grammar",
+      "progressPercentage": 0.0,
+      "lessons": [
+        {
+          "lessonId": "lesson-001",
+          "lessonName": "Present Tense",
+          "maxAttemps": 3,
+          "point": 100,
+          "submissions": [],
+          "questions": [
+            {
+              "qid": "q-001",
+              "title": "Choose the correct verb",
+              "type": "multiple_choice",
+              "choices": ["run", "runs", "running", "ran"],
+              "goodChoice": "runs"
+            },
+            {
+              "qid": "q-002",
+              "title": "Fill in the blank: She ___ to school every day.",
+              "type": "multiple_choice",
+              "choices": ["go", "gos", "goes", "gone"],
+              "goodChoice": "goes"
+            }
+          ]
+        },
+        {
+          "lessonId": "lesson-002",
+          "lessonName": "Past Tense",
+          "maxAttemps": 3,
+          "point": 150,
+          "submissions": [],
+          "questions": [
+            {
+              "qid": "q-003",
+              "title": "What is the past tense of 'go'?",
+              "type": "multiple_choice",
+              "choices": ["goed", "went", "gone", "going"],
+              "goodChoice": "went"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "topicId": "topic-002",
+      "topicName": "Vocabulary",
+      "progressPercentage": 0.0,
+      "lessons": [
+        {
+          "lessonId": "lesson-003",
+          "lessonName": "Animals",
+          "maxAttemps": 5,
+          "point": 80,
+          "submissions": [],
+          "questions": [
+            {
+              "qid": "q-004",
+              "title": "What animal says 'meow'?",
+              "type": "multiple_choice",
+              "choices": ["Dog", "Cat", "Bird", "Fish"],
+              "goodChoice": "Cat"
+            }
+          ]
+        },
+        {
+          "lessonId": "lesson-004",
+          "lessonName": "Colors",
+          "maxAttemps": 5,
+          "point": 80,
+          "submissions": [],
+          "questions": [
+            {
+              "qid": "q-005",
+              "title": "What color is the sky?",
+              "type": "multiple_choice",
+              "choices": ["Red", "Green", "Blue", "Yellow"],
+              "goodChoice": "Blue"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "topicId": "topic-003",
+      "topicName": "Conversation",
+      "progressPercentage": 0.0,
+      "lessons": [
+        {
+          "lessonId": "lesson-005",
+          "lessonName": "Greetings",
+          "maxAttemps": 3,
+          "point": 120,
+          "submissions": [],
+          "questions": [
+            {
+              "qid": "q-006",
+              "title": "How do you respond to 'How are you?'",
+              "type": "multiple_choice",
+              "choices": ["I am fine", "Yes", "Goodbye", "Please"],
+              "goodChoice": "I am fine"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

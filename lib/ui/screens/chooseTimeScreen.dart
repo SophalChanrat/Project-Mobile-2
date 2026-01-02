@@ -1,3 +1,4 @@
+import 'package:app_mvp/data/userRepository.dart';
 import 'package:app_mvp/models/topic.dart';
 import 'package:app_mvp/router/appRouter.dart';
 import 'package:app_mvp/ui/widget/button.dart';
@@ -16,7 +17,7 @@ class Choosetimescreen extends StatelessWidget {
       skip onBoarding and chooseTime when open for the second time
     */
 
-    // await SharePreference.setNotFirstOpen();
+    await UserRepository.setNotFirstOpen();
     context.go(AppRouter.topicScreen, extra: topics);
   }
 

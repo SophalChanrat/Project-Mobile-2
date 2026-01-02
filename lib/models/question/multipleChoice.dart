@@ -1,4 +1,3 @@
-import 'package:app_mvp/models/answer.dart';
 import 'package:app_mvp/models/question/question.dart';
 
 class MultipleChoice extends Question {
@@ -17,9 +16,7 @@ class MultipleChoice extends Question {
     return MultipleChoice(
       qid: json['qid'] as String,
       title: json['title'] as String,
-      answers: (json['answers'] as List)
-          .map((answer) => Answer.fromJson(answer))
-          .toList(),
+      answers: [],
       choices: List<String>.from(json['choices']),
       goodChoice: json['goodChoice'] as String,
     );

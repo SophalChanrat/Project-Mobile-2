@@ -1,4 +1,3 @@
-import 'package:app_mvp/models/answer.dart';
 import 'package:app_mvp/models/question/question.dart';
 
 class DragDropQuestion extends Question {
@@ -16,9 +15,7 @@ class DragDropQuestion extends Question {
     return DragDropQuestion(
       qid: json['qid'] as String,
       title: json['title'] as String,
-      answers: (json['answers'] as List)
-          .map((answer) => Answer.fromJson(answer))
-          .toList(),
+      answers: [],
       draggableItem: List<String>.from(json['draggableItem']),
       correctMapping: Map<String, String>.from(json['correctMapping']),
     );

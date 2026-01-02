@@ -1,4 +1,4 @@
-import 'package:app_mvp/data/sharePreference.dart';
+import 'package:app_mvp/data/userRepository.dart';
 import 'package:app_mvp/models/topic.dart';
 import 'package:app_mvp/router/AppRouter.dart';
 import 'package:flutter/material.dart';
@@ -22,19 +22,19 @@ class _SplashscreenState extends State<Splashscreen> {
   @override
   void initState() {
     super.initState();
-    _checkAndNavigate();
+    // _checkAndNavigate();
   }
 
-  Future<void> _checkAndNavigate() async {
-    final bool isFirstOpen = await SharePreference.getFirstOpen();
+  // Future<void> _checkAndNavigate() async {
+  //   final bool isOpened = await UserRepository.getFirstOpen();
 
-    if (!mounted) return;
-    if (isFirstOpen) {
-      context.go(AppRouter.onBoardingScreen, extra: mockTopics);
-    } else {
-      context.go(AppRouter.topicScreen, extra: mockTopics);
-    }
-  }
+  //   if (!mounted) return;
+  //   if (isOpened) {
+  //     context.go(AppRouter.topicScreen, extra: mockTopics);
+  //   } else {
+  //     context.go(AppRouter.onBoardingScreen, extra: mockTopics);
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {

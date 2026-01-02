@@ -20,7 +20,7 @@ class Topic {
     return Topic(
       topicId: json['topicId'] as String,
       topicName: json['topicName'] as String,
-      progressPercentage: json['progressPercentage'] as double,
+      progressPercentage: json['progressPercentage'] as double? ?? 0.0 ,
       lessons: (json['lessons'] as List)
           .map((lesson) => Lesson.fromJson(lesson))
           .toList(),
