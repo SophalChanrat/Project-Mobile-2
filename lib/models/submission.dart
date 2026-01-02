@@ -11,9 +11,31 @@ class Submission {
   final List<Answer> answers;
 
   Submission({
+    String? submissionId,
     required this.date,
     required this.progress,
     required this.isComplete,
     required this.answers,
-  }) : submissionId = uuid.v4();
+  }) : submissionId = submissionId ?? uuid.v4();
+
+  factory Submission.fromJson(Map<String, dynamic> json) {
+    return Submission(
+      submissionId: json['submissionId'] as String,
+      date: DateTime.parse(json['date'] as String),
+      progress: json['progress'] as int,
+      isComplete: json['isComplete'] as bool,
+      answers: (json['answers'] as List)
+          .map((answer) => Answer.fromJson(answer))
+          .toList(),
+    );
+  }
+  Map<String, dynamic> toJson() {
+    return {
+      'submissionId': submissionId,
+      'date': date.toString(),
+      'progress': progress,
+      'isComplete': isComplete,
+      'answers': answers.map((answer) => answer.toJson()).toList(),
+    };
+  }
 }

@@ -9,7 +9,27 @@ class Player {
   final List<Submission> submissions;
 
   Player ({
+    String? playerId,
     required this.preferTimeSpend,
     required this.submissions
-  }) : playerId = uuid.v4();
+  }) : playerId = playerId ?? uuid.v4();
+
+  factory Player.fromJson(Map<String, dynamic> json) {
+    return Player(
+      playerId: json['playerId'] as String,
+      preferTimeSpend:
+          Duration(minutes: json['preferTimeSpend'] as int),
+      submissions: (json['submissions'] as List)
+          .map((submission) => Submission.fromJson(submission))
+          .toList(),
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'playerId': playerId,
+      'preferTimeSpend': preferTimeSpend.inMinutes,
+      'submissions': submissions.map((submission) => submission.toJson()).toList(),
+    };
+  }
 }

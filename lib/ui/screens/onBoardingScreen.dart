@@ -8,7 +8,7 @@ class Onboardingscreen extends StatelessWidget {
   const Onboardingscreen({super.key, required this.topics});
   final List<Topic> topics;
 
-  void goToChooseTime (BuildContext context) async {
+  void goToChooseTime (BuildContext context) {
     context.go(AppRouter.chooseTimeScreen, extra: topics);
   }
 

@@ -1,4 +1,6 @@
+import 'package:app_mvp/router/AppRouter.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class TopicCard extends StatelessWidget {
   const TopicCard({
@@ -26,6 +28,7 @@ class TopicCard extends StatelessWidget {
     return Card(
       elevation: 6,
       child: ListTile(
+        onTap: () => context.go(AppRouter.lessonScreen),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadiusGeometry.circular(15),
         ),
