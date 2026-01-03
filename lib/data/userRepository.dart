@@ -21,7 +21,7 @@ class UserRepository {
   }
   static Future<bool> getFirstOpen() async{
     final prefs = await _instance;
-    return !(prefs.getBool(_isOpened) ?? false);
+    return (prefs.getBool(_isOpened) ?? false);
   }
   
   static Future<void> savePlayer(Player player) async {
