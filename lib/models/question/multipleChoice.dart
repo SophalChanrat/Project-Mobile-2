@@ -7,7 +7,6 @@ class MultipleChoice extends Question {
   MultipleChoice({
     super.qid,
     required super.title,
-    required super.answers,
     required this.choices,
     required this.goodChoice,
   });
@@ -16,7 +15,6 @@ class MultipleChoice extends Question {
     return MultipleChoice(
       qid: json['qid'] as String,
       title: json['title'] as String,
-      answers: [],
       choices: List<String>.from(json['choices']),
       goodChoice: json['goodChoice'] as String,
     );

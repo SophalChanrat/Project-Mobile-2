@@ -10,7 +10,6 @@ class Lesson {
   final String lessonName;
   final int maxAttempts;
   final int point;
-  final List<Submission> submissions;
   final List<Question> questions;
 
   Lesson({
@@ -18,7 +17,6 @@ class Lesson {
     required this.lessonName,
     required this.maxAttempts,
     required this.point,
-    required this.submissions,
     required this.questions,
   }) : lessonId = lessonId ?? uuid.v4();
 
@@ -28,9 +26,6 @@ class Lesson {
       lessonName: json['lessonName'] as String,
       maxAttempts: json['maxAttemps'] as int,
       point: json['point'] as int,
-      submissions: (json['submissions'] as List)
-          .map((submission) => Submission.fromJson(submission))
-          .toList(),
       questions: (json['questions'] as List)
           .map((question) => QuestionType.fromJson(question))
           .toList(),
@@ -42,7 +37,6 @@ class Lesson {
       'lessonName': lessonName,
       'maxAttemps': maxAttempts,
       'point': point,
-      'submissions': submissions.map((submission) => submission.toJson()).toList(),
       'questions': questions.map((question) => question.toBaseJson()).toList(),
     };
   }

@@ -7,7 +7,6 @@ class DragDropQuestion extends Question {
   DragDropQuestion({
     super.qid,
     required super.title,
-    required super.answers,
     required this.draggableItem,
     required this.correctMapping,
   });
@@ -15,7 +14,6 @@ class DragDropQuestion extends Question {
     return DragDropQuestion(
       qid: json['qid'] as String,
       title: json['title'] as String,
-      answers: [],
       draggableItem: List<String>.from(json['draggableItem']),
       correctMapping: Map<String, String>.from(json['correctMapping']),
     );

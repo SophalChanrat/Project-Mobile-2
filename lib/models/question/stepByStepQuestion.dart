@@ -8,7 +8,6 @@ class StepByStepQuestion extends Question {
   StepByStepQuestion({
     super.qid,
     required super.title,
-    required super.answers,
     required this.steps,
     required this.correctStep,
     required this.content
@@ -17,7 +16,6 @@ class StepByStepQuestion extends Question {
     return StepByStepQuestion(
       qid: json['qid'] as String,
       title: json['title'] as String,
-      answers: [],
       content: json['content'] as String,
       steps: List<String>.from(json['steps']),
       correctStep: List<String>.from(json['correctStep']),

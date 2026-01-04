@@ -10,7 +10,6 @@
           "lessonName": "Solving Linear Equations",
           "maxAttemps": 3,
           "point": 100,
-          "submissions": [],
           "questions": [
             {
               "qid": "q-001",
@@ -48,7 +47,6 @@
           "lessonName": "Quadratic Basics",
           "maxAttemps": 3,
           "point": 150,
-          "submissions": [],
           "questions": [
             {
               "qid": "q-005",
@@ -86,7 +84,6 @@
           "lessonName": "Area Calculations",
           "maxAttemps": 5,
           "point": 80,
-          "submissions": [],
           "questions": [
             {
               "qid": "q-008",
@@ -124,7 +121,6 @@
           "lessonName": "Perimeter",
           "maxAttemps": 5,
           "point": 80,
-          "submissions": [],
           "questions": [
             {
               "qid": "q-012",
@@ -162,7 +158,6 @@
           "lessonName": "Adding Fractions",
           "maxAttemps": 3,
           "point": 120,
-          "submissions": [],
           "questions": [
             {
               "qid": "q-015",

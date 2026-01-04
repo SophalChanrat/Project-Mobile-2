@@ -7,7 +7,6 @@ class ArrangeAnswersQuestion extends Question {
   ArrangeAnswersQuestion({
     super.qid,
     required super.title,
-    required super.answers,
     required this.items,
     required this.correctOrder,
   });
@@ -15,7 +14,6 @@ class ArrangeAnswersQuestion extends Question {
     return ArrangeAnswersQuestion(
       qid: json['qid'] as String,
       title: json['title'] as String,
-      answers: [],
       items: List<String>.from(json['items']),
       correctOrder: List<String>.from(json['correctOrder']),
     );
