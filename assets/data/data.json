@@ -2,45 +2,75 @@
   "topics": [
     {
       "topicId": "topic-001",
-      "topicName": "Basic Grammar",
+      "topicName": "Algebra",
       "progressPercentage": 0.0,
       "lessons": [
         {
           "lessonId": "lesson-001",
-          "lessonName": "Present Tense",
+          "lessonName": "Solving Linear Equations",
           "maxAttemps": 3,
           "point": 100,
           "submissions": [],
           "questions": [
             {
               "qid": "q-001",
-              "title": "Choose the correct verb",
+              "title": "What is the value of x in: x + 5 = 12?",
               "type": "multiple_choice",
-              "choices": ["run", "runs", "running", "ran"],
-              "goodChoice": "runs"
+              "choices": ["5", "7", "12", "17"],
+              "goodChoice": "7"
             },
             {
               "qid": "q-002",
-              "title": "Fill in the blank: She ___ to school every day.",
+              "title": "Choose the steps to solve",
+              "type": "step_by_step",
+              "content": "2x + 6 = 10",
+              "steps": ["Subtract 6 from both sides", "Divide by 2", "Add 6 to both sides", "Multiply by 2"],
+              "correctStep": ["Subtract 6 from both sides", "Divide by 2"]
+            },
+            {
+              "qid": "q-003",
+              "title": "Arrange the steps to solve 3x - 9 = 12",
+              "type": "arrange_answer",
+              "items": ["Get x = 7", "Add 9 to both sides", "Divide by 3"],
+              "correctOrder": ["Add 9 to both sides", "Divide by 3", "Get x = 7"]
+            },
+            {
+              "qid": "q-004",
+              "title": "Solve: 4x = 20. What is x?",
               "type": "multiple_choice",
-              "choices": ["go", "gos", "goes", "gone"],
-              "goodChoice": "goes"
+              "choices": ["4", "5", "16", "80"],
+              "goodChoice": "5"
             }
           ]
         },
         {
           "lessonId": "lesson-002",
-          "lessonName": "Past Tense",
+          "lessonName": "Quadratic Basics",
           "maxAttemps": 3,
           "point": 150,
           "submissions": [],
           "questions": [
             {
-              "qid": "q-003",
-              "title": "What is the past tense of 'go'?",
+              "qid": "q-005",
+              "title": "What is 3²?",
               "type": "multiple_choice",
-              "choices": ["goed", "went", "gone", "going"],
-              "goodChoice": "went"
+              "choices": ["6", "9", "12", "27"],
+              "goodChoice": "9"
+            },
+            {
+              "qid": "q-006",
+              "title": "Arrange the steps to solve x² - 4 = 0",
+              "type": "arrange_answer",
+              "items": ["Take square root", "Get x = ±2", "Add 4 to both sides"],
+              "correctOrder": ["Add 4 to both sides", "Take square root", "Get x = ±2"]
+            },
+            {
+              "qid": "q-007",
+              "title": "Choose the steps to factor",
+              "type": "step_by_step",
+              "content": "x² + 5x + 6",
+              "steps": ["Find factors of 6 that add to 5", "Write as (x+2)(x+3)", "Find factors of 6 that multiply to 5", "Write as (x-2)(x-3)"],
+              "correctStep": ["Find factors of 6 that add to 5", "Write as (x+2)(x+3)"]
             }
           ]
         }
@@ -48,38 +78,75 @@
     },
     {
       "topicId": "topic-002",
-      "topicName": "Vocabulary",
+      "topicName": "Geometry",
       "progressPercentage": 0.0,
       "lessons": [
         {
           "lessonId": "lesson-003",
-          "lessonName": "Animals",
+          "lessonName": "Area Calculations",
           "maxAttemps": 5,
           "point": 80,
           "submissions": [],
           "questions": [
             {
-              "qid": "q-004",
-              "title": "What animal says 'meow'?",
+              "qid": "q-008",
+              "title": "What is the formula for area of a rectangle?",
               "type": "multiple_choice",
-              "choices": ["Dog", "Cat", "Bird", "Fish"],
-              "goodChoice": "Cat"
+              "choices": ["length + width", "length × width", "2 × (length + width)", "length²"],
+              "goodChoice": "length × width"
+            },
+            {
+              "qid": "q-009",
+              "title": "Arrange steps to find area of triangle",
+              "type": "arrange_answer",
+              "items": ["Divide by 2", "Multiply base × height", "Get the area"],
+              "correctOrder": ["Multiply base × height", "Divide by 2", "Get the area"]
+            },
+            {
+              "qid": "q-010",
+              "title": "Choose the steps to find circle area",
+              "type": "step_by_step",
+              "content": "Circle with radius = 5",
+              "steps": ["Square the radius (5² = 25)", "Multiply by π", "Add π to radius", "Divide by 2"],
+              "correctStep": ["Square the radius (5² = 25)", "Multiply by π"]
+            },
+            {
+              "qid": "q-011",
+              "title": "What is the area of a square with side 6?",
+              "type": "multiple_choice",
+              "choices": ["12", "24", "36", "6"],
+              "goodChoice": "36"
             }
           ]
         },
         {
           "lessonId": "lesson-004",
-          "lessonName": "Colors",
+          "lessonName": "Perimeter",
           "maxAttemps": 5,
           "point": 80,
           "submissions": [],
           "questions": [
             {
-              "qid": "q-005",
-              "title": "What color is the sky?",
+              "qid": "q-012",
+              "title": "Arrange steps for rectangle perimeter",
+              "type": "arrange_answer",
+              "items": ["Add length + width", "Multiply by 2", "Get the perimeter"],
+              "correctOrder": ["Add length + width", "Multiply by 2", "Get the perimeter"]
+            },
+            {
+              "qid": "q-013",
+              "title": "What is the perimeter of a square with side 5?",
               "type": "multiple_choice",
-              "choices": ["Red", "Green", "Blue", "Yellow"],
-              "goodChoice": "Blue"
+              "choices": ["10", "15", "20", "25"],
+              "goodChoice": "20"
+            },
+            {
+              "qid": "q-014",
+              "title": "Choose steps for square perimeter",
+              "type": "step_by_step",
+              "content": "Square with side = 8",
+              "steps": ["Multiply side by 4", "Add all four sides", "Divide by 4", "Square the side"],
+              "correctStep": ["Multiply side by 4"]
             }
           ]
         }
@@ -87,22 +154,51 @@
     },
     {
       "topicId": "topic-003",
-      "topicName": "Conversation",
+      "topicName": "Fractions",
       "progressPercentage": 0.0,
       "lessons": [
         {
           "lessonId": "lesson-005",
-          "lessonName": "Greetings",
+          "lessonName": "Adding Fractions",
           "maxAttemps": 3,
           "point": 120,
           "submissions": [],
           "questions": [
             {
-              "qid": "q-006",
-              "title": "How do you respond to 'How are you?'",
+              "qid": "q-015",
+              "title": "What is 1/2 + 1/2?",
               "type": "multiple_choice",
-              "choices": ["I am fine", "Yes", "Goodbye", "Please"],
-              "goodChoice": "I am fine"
+              "choices": ["1/4", "2/4", "1", "2"],
+              "goodChoice": "1"
+            },
+            {
+              "qid": "q-016",
+              "title": "Arrange steps to add 1/4 + 2/4",
+              "type": "arrange_answer",
+              "items": ["Keep denominator same", "Add numerators: 1+2=3", "Result is 3/4"],
+              "correctOrder": ["Keep denominator same", "Add numerators: 1+2=3", "Result is 3/4"]
+            },
+            {
+              "qid": "q-017",
+              "title": "Choose steps to add fractions",
+              "type": "step_by_step",
+              "content": "1/3 + 1/6",
+              "steps": ["Find common denominator (6)", "Convert 1/3 to 2/6", "Add: 2/6 + 1/6 = 3/6", "Multiply denominators"],
+              "correctStep": ["Find common denominator (6)", "Convert 1/3 to 2/6", "Add: 2/6 + 1/6 = 3/6"]
+            },
+            {
+              "qid": "q-018",
+              "title": "What is 3/4 simplified from 6/8?",
+              "type": "multiple_choice",
+              "choices": ["1/2", "2/3", "3/4", "4/5"],
+              "goodChoice": "3/4"
+            },
+            {
+              "qid": "q-019",
+              "title": "Arrange steps to simplify 6/8",
+              "type": "arrange_answer",
+              "items": ["Find GCD of 6 and 8 (which is 2)", "Divide both by GCD", "Result is 3/4"],
+              "correctOrder": ["Find GCD of 6 and 8 (which is 2)", "Divide both by GCD", "Result is 3/4"]
             }
           ]
         }

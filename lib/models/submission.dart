@@ -5,6 +5,7 @@ final uuid = Uuid();
 
 class Submission {
   final String submissionId;
+  final String lessonId;
   final DateTime date;
   final int progress;
   final bool isComplete;
@@ -12,6 +13,7 @@ class Submission {
 
   Submission({
     String? submissionId,
+    required this.lessonId,
     required this.date,
     required this.progress,
     required this.isComplete,
@@ -21,6 +23,7 @@ class Submission {
   factory Submission.fromJson(Map<String, dynamic> json) {
     return Submission(
       submissionId: json['submissionId'] as String,
+      lessonId: json['lessonId'] as String,
       date: DateTime.parse(json['date'] as String),
       progress: json['progress'] as int,
       isComplete: json['isComplete'] as bool,
@@ -32,6 +35,7 @@ class Submission {
   Map<String, dynamic> toJson() {
     return {
       'submissionId': submissionId,
+      'lessonId': lessonId,
       'date': date.toString(),
       'progress': progress,
       'isComplete': isComplete,

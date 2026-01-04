@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 class LessonButton extends StatelessWidget {
   final int lessonNumber;
   final bool isLocked;
+  final bool isCompleted;
   final VoidCallback? onTap;
 
   const LessonButton({
     super.key,
     required this.lessonNumber,
     this.isLocked = false,
+    this.isCompleted = false,
     this.onTap,
   });
 
@@ -39,11 +41,20 @@ class LessonButton extends StatelessWidget {
                 shape: BoxShape.circle,
                 color: isLocked
                     ? Colors.grey[300]
-                    : Theme.of(context).colorScheme.primary,
+                    : isCompleted
+                        ? Colors.green
+                        : Theme.of(context).colorScheme.primary,
               ),
             ),
 
-            if (!isLocked)
+            if (!isLocked && isCompleted)
+              Icon(
+                Icons.check,
+                size: 35,
+                color: Colors.white,
+              ),
+
+            if (!isLocked && !isCompleted)
               Icon(
                 Icons.star,
                 size: 35,

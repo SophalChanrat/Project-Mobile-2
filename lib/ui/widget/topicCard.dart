@@ -1,23 +1,57 @@
+import 'package:app_mvp/data/userRepository.dart';
+import 'package:app_mvp/models/topic.dart';
 import 'package:app_mvp/router/AppRouter.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-class TopicCard extends StatelessWidget {
+class TopicCard extends StatefulWidget {
   const TopicCard({
     super.key,
-    required this.topicName,
-    required this.progressPercentage,
+    required this.topic,
     this.icon = Icons.emoji_events,
   });
 
-  final String topicName;
-  final double progressPercentage;
+  final Topic topic;
   final IconData icon;
 
-  double get percentage => progressPercentage * 10 / 100;
-  String get percentageText => "${progressPercentage * 100 / 10} %";
+  @override
+  State<TopicCard> createState() => _TopicCardState();
+}
+
+class _TopicCardState extends State<TopicCard> {
+  Set<String> completedLessonIds = {};
+
+  @override
+  void initState() {
+    super.initState();
+    _loadCompletedLessons();
+  }
+
+  Future<void> _loadCompletedLessons() async {
+    final completed = await UserRepository.getCompletedLessonIds();
+    if (mounted) {
+      setState(() {
+        completedLessonIds = completed;
+      });
+    }
+  }
+
+  /// Calculate progress based on completed lessons in this topic
+  int get completedCount {
+    return widget.topic.lessons
+        .where((lesson) => completedLessonIds.contains(lesson.lessonId))
+        .length;
+  }
+
+  double get percentage {
+    if (widget.topic.lessons.isEmpty) return 0.0;
+    return completedCount / widget.topic.lessons.length;
+  }
+
+  String get percentageText => "${(percentage * 100).round()} %";
+
   Color? get iconColor {
-    if (progressPercentage == 10) {
+    if (percentage == 1.0) {
       return Colors.orange[200];
     }
     return Colors.grey[300];
@@ -28,13 +62,19 @@ class TopicCard extends StatelessWidget {
     return Card(
       elevation: 6,
       child: ListTile(
-        onTap: () => context.go(AppRouter.lessonScreen),
+        onTap: () async {
+          await context.push(AppRouter.lessonScreen, extra: widget.topic);
+          // Reload progress when returning from lesson screen
+          if (mounted) {
+            await _loadCompletedLessons();
+          }
+        },
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadiusGeometry.circular(15),
         ),
         tileColor: Colors.white,
         title: Text(
-          topicName,
+          widget.topic.topicName,
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Theme.of(context).colorScheme.onSurface),
         ),
         subtitle: Padding(

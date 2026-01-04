@@ -15,14 +15,12 @@ class Topicscreen extends StatelessWidget {
         child: Center(
           child: Column(
             children: [
-              Headertopic(title: "Math", point: 100,),
+              Headertopic(title: "Math", point: 100),
               Expanded(
                 child: ListView.builder(
                   itemCount: topics.length,
-                  itemBuilder: (context, index) => TopicCard(
-                    topicName: topics[index].topicName,
-                    progressPercentage: topics[index].progressPercentage,
-                  ),
+                  itemBuilder: (context, index) =>
+                      TopicCard(topic: topics[index]),
                 ),
               ),
             ],

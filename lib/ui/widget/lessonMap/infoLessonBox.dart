@@ -1,18 +1,20 @@
+import 'package:app_mvp/models/lesson.dart';
 import 'package:flutter/material.dart';
 
 class Infolessonbox extends StatelessWidget {
-  final String topicName;
+  final Lesson lesson;
   final int lessonNumber;
   final int totalLessons;
-  final int point;
   final bool isLocked;
+  final VoidCallback? onStart;
+
   const Infolessonbox({
     super.key,
-    required this.topicName,
+    required this.lesson,
     required this.lessonNumber,
     required this.totalLessons,
-    required this.point,
     this.isLocked = false,
+    this.onStart,
   });
 
   @override
@@ -30,7 +32,7 @@ class Infolessonbox extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-              topicName,
+              lesson.lessonName,
               style: TextStyle(
                 color: isLocked
                     ? Colors.grey[600]
@@ -39,7 +41,17 @@ class Infolessonbox extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            SizedBox(height: 12),
+            SizedBox(height: 8),
+            Text(
+              '${lesson.questions.length} Questions',
+              style: TextStyle(
+                color: isLocked
+                    ? Colors.grey[500]
+                    : Theme.of(context).colorScheme.onSurface,
+                fontSize: 14,
+              ),
+            ),
+            SizedBox(height: 4),
             Text(
               'Lesson $lessonNumber of $totalLessons',
               style: TextStyle(
@@ -50,22 +62,25 @@ class Infolessonbox extends StatelessWidget {
               ),
             ),
             SizedBox(height: 16),
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
-              decoration: BoxDecoration(
-                color: isLocked ? Colors.grey[400] : Colors.white,
-                borderRadius: BorderRadius.circular(30),
-              ),
-              child: Text(
-                isLocked ? 'Locked' : 'Start + $point Droplets',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: isLocked
-                      ? Colors.white
-                      : Theme.of(context).colorScheme.primary,
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
+            GestureDetector(
+              onTap: onStart,
+              child: Container(
+                width: double.infinity,
+                padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
+                decoration: BoxDecoration(
+                  color: isLocked ? Colors.grey[400] : Colors.white,
+                  borderRadius: BorderRadius.circular(30),
+                ),
+                child: Text(
+                  isLocked ? 'Locked' : 'Start + ${lesson.point} Droplets',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: isLocked
+                        ? Colors.white
+                        : Theme.of(context).colorScheme.primary,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
             ),

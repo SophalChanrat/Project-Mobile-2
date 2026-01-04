@@ -1,11 +1,11 @@
-class Feedback {
+class FeedbackModel {
   final String explaination;
   final String hint;
 
-  Feedback({required this.explaination, required this.hint});
+  FeedbackModel({required this.explaination, required this.hint});
 
-  factory Feedback.fromJson(Map<String, dynamic> json) {
-    return Feedback(
+  factory FeedbackModel.fromJson(Map<String, dynamic> json) {
+    return FeedbackModel(
       explaination: json['explaination'] as String,
       hint: json['hint'] as String
     );
