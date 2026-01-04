@@ -11,6 +11,7 @@ import 'package:app_mvp/models/submission.dart';
 import 'package:app_mvp/ui/widget/button.dart';
 import 'package:app_mvp/ui/widget/question/arrange/arrangeQuestionBody.dart';
 import 'package:app_mvp/ui/widget/question/stepQuestion/stepQuestionBody.dart';
+import 'package:app_mvp/utils/animationUtils.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -32,9 +33,10 @@ class _QuestionScreenState extends State<QuestionScreen> {
   late Submission _currentSubmission;
 
   Question get currentQuestion => widget.lesson.questions[currentQuestionIndex];
-  bool get isLastQuestion => currentQuestionIndex >= widget.lesson.questions.length - 1;
+  bool get isLastQuestion =>
+      currentQuestionIndex >= widget.lesson.questions.length - 1;
   int get totalQuestions => widget.lesson.questions.length;
-  
+
   @override
   void initState() {
     super.initState();
@@ -51,9 +53,9 @@ class _QuestionScreenState extends State<QuestionScreen> {
 
   void _initializeQuestionState() {
     final question = currentQuestion;
-    
+
     selectedSteps = [];
-    
+
     if (question is ArrangeAnswersQuestion) {
       currentOrder = List.from(question.items);
     } else {
@@ -79,7 +81,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
 
   bool _checkAnswer() {
     final question = currentQuestion;
-    
+
     if (question is StepByStepQuestion) {
       return _listEquals(selectedSteps, question.correctStep);
     } else if (question is ArrangeAnswersQuestion) {
@@ -87,7 +89,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
     }
     return true;
   }
-  
+
   bool _listEquals(List<String> a, List<String> b) {
     if (a.length != b.length) return false;
     for (int i = 0; i < a.length; i++) {
@@ -101,7 +103,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
     if (isCorrect) {
       correctCount++;
     }
-    
+
     final question = currentQuestion;
     String responseStr;
     if (question is StepByStepQuestion) {
@@ -111,22 +113,30 @@ class _QuestionScreenState extends State<QuestionScreen> {
     } else {
       responseStr = '';
     }
-    
-    _currentSubmission.answers.add(Answer(
-      questionId: question.qid,
-      response: responseStr,
-      attempsCount: 1,
-      feedback: FeedbackModel(
-        explaination: isCorrect ? 'Correct!' : 'Incorrect answer',
-        hint: isCorrect ? '' : 'Try reviewing the material',
+
+    _currentSubmission.answers.add(
+      Answer(
+        questionId: question.qid,
+        response: responseStr,
+        attempsCount: 1,
+        feedback: FeedbackModel(
+          explaination: isCorrect ? 'Correct!' : 'Incorrect answer',
+          hint: isCorrect ? '' : 'Try reviewing the material',
+        ),
       ),
-    ));
-    
+    );
+
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(isCorrect ? '✓ Correct!' : '✗ Incorrect'),
         backgroundColor: isCorrect ? Colors.green : Colors.red,
         duration: Duration(milliseconds: 600),
+        behavior: SnackBarBehavior.floating,
+        margin: EdgeInsets.only(
+          bottom: MediaQuery.of(context).size.height - 150,
+          left: 20,
+          right: 20,
+        ),
       ),
     );
 
@@ -143,7 +153,6 @@ class _QuestionScreenState extends State<QuestionScreen> {
   Future<void> _saveSubmissionAndComplete() async {
     final percentage = ((correctCount / totalQuestions) * 100).round();
 
-    // Create completed submission using data from lesson's current submission
     final completedSubmission = Submission(
       lessonId: _currentSubmission.lessonId,
       date: _currentSubmission.date,
@@ -151,42 +160,59 @@ class _QuestionScreenState extends State<QuestionScreen> {
       isComplete: true,
       answers: _currentSubmission.answers,
     );
-    
+
     await UserRepository.addSubmission(completedSubmission);
-    
+
     if (!mounted) return;
     _showCompletionDialog(percentage);
   }
 
   void _showCompletionDialog(int percentage) {
-    
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (dialogContext) => AlertDialog(
-        title: Text('Lesson Complete! 🎉'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text('You completed "${widget.lesson.lessonName}"!'),
-            SizedBox(height: 16),
-            Text(
-              'Score: $correctCount / $totalQuestions ($percentage%)',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+    Navigator.of(context).push(
+      Animationutils.createScalePopupRoute(
+        Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Material(
+            borderRadius: BorderRadius.circular(16),
+            child: Padding(
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Text(
+                    'Lesson Complete!',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 16),
+                  Text('You completed "${widget.lesson.lessonName}"!'),
+                  const SizedBox(height: 16),
+                  Text(
+                    'Score: $correctCount / $totalQuestions ($percentage%)',
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text('Points earned: +${widget.lesson.point}'),
+                  const SizedBox(height: 16),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                          context.pop();
+                        },
+                        child: const Text('Continue'),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
-            SizedBox(height: 8),
-            Text('Points earned: +${widget.lesson.point}'),
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.of(dialogContext).pop(); // Close dialog
-              context.pop(); // Go back to lesson map using screen's context
-            },
-            child: Text('Continue'),
           ),
-        ],
+        ),
       ),
     );
   }
@@ -201,10 +227,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
             children: [
               Text('No questions available for this lesson'),
               SizedBox(height: 20),
-              Button(
-                label: 'Go Back',
-                action: () => context.pop(),
-              ),
+              Button(label: 'Go Back', action: () => context.pop()),
             ],
           ),
         ),
@@ -212,6 +235,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
     }
 
     return Scaffold(
+      appBar: AppBar(),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(20.0),
@@ -219,11 +243,17 @@ class _QuestionScreenState extends State<QuestionScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 20),
-              
+
               Expanded(
-                child: _buildQuestionContent(),
+                child: AnimatedSwitcher(
+                  duration: Duration(milliseconds: 400),
+                  transitionBuilder: (child, animation) {
+                    return Animationutils.fadeSlideTransition(child, animation);
+                  },
+                  child: _buildQuestionContent(),
+                ),
               ),
-              
+
               Button(
                 label: isLastQuestion ? "Finish" : "Continue",
                 action: _onContinue,
@@ -240,23 +270,25 @@ class _QuestionScreenState extends State<QuestionScreen> {
 
     if (question is StepByStepQuestion) {
       return StepQuestionBody(
+        key: ValueKey(currentQuestionIndex),
         question: question,
         selectedSteps: selectedSteps,
         onStepTap: _onStepTap,
       );
     } else if (question is ArrangeAnswersQuestion) {
       return ArrangeQuestionBody(
+        key: ValueKey(currentQuestionIndex),
         question: question,
         currentOrder: currentOrder,
         onReorder: _onReorder,
       );
     } else if (question is MultipleChoice) {
       // TODO: Implement MultipleChoice widget
-      return Placeholder(child: Text("Coming Soon"),);
+      return Placeholder(child: Text("Coming Soon"));
     } else if (question is DragDropQuestion) {
       // TODO: Implement DragDrop widget
-      return Placeholder(child: Text("Coming Soon"),);
+      return Placeholder(child: Text("Coming Soon"));
     }
-    return Placeholder(child: Text("Not available"),);
+    return Placeholder(child: Text("Not available"));
   }
 }

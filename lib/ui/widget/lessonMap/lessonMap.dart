@@ -48,13 +48,12 @@ class _LessonMapState extends State<LessonMap> {
 
   void _onLessonTap(int index) {
     setState(() {
-      selectedLessonIndex = selectedLessonIndex == index ? null : index;
+      selectedLessonIndex = index;
     });
   }
 
   void _startLesson(Lesson lesson) async {
     await context.push(AppRouter.questionScreen, extra: lesson);
-    // Reload completed lessons when returning from question screen
     if (mounted) {
       await _loadCompletedLessons();
     }
@@ -107,7 +106,6 @@ class _LessonMapState extends State<LessonMap> {
   }
 
   Alignment _getAlignment(int index) {
-    // Creates a zigzag pattern: center -> left -> center -> right -> repeat
     switch (index % 4) {
       case 0:
         return Alignment.center;

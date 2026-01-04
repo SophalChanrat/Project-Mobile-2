@@ -32,7 +32,6 @@ class Headertopic extends StatelessWidget {
                 color: Theme.of(context).colorScheme.onSurface,
               ),
             ),
-            SizedBox(width: 16),
             // Icon(Icons.favorite, color: Colors.red, size: 20),
             // SizedBox(width: 4),
             // Text(

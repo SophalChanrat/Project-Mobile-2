@@ -8,6 +8,7 @@ import 'package:app_mvp/ui/screens/lessonMapScreen.dart';
 import 'package:app_mvp/ui/screens/onBoardingScreen.dart';
 import 'package:app_mvp/ui/screens/questionScreen.dart';
 import 'package:app_mvp/ui/screens/topicScreen.dart';
+import 'package:app_mvp/utils/animationUtils.dart';
 import 'package:go_router/go_router.dart';
 
 GoRouter router({
@@ -26,34 +27,34 @@ GoRouter router({
       ),
       GoRoute(
         path: AppRouter.onBoardingScreen,
-        builder: (context, state) {
-          return Onboardingscreen(topics: topics);
+        pageBuilder: (context, state) {
+          return Animationutils.leftToRight(Onboardingscreen(topics: topics));
         },
       ),
       GoRoute(
         path: AppRouter.chooseTimeScreen,
-        builder: (context, state) {
-          return Choosetimescreen(topics: topics);
+        pageBuilder: (context, state) {
+          return Animationutils.leftToRight(Choosetimescreen(topics: topics));
         },
       ),
       GoRoute(
         path: AppRouter.topicScreen,
-        builder: (context, state) {
-          return Topicscreen(topics: topics);
+        pageBuilder: (context, state) {
+          return Animationutils.rightToLeft(Topicscreen(topics: topics));
         },
       ),
       GoRoute(
         path: AppRouter.lessonScreen,
-        builder: (context, state) {
+        pageBuilder: (context, state) {
           final topic = state.extra as Topic;
-          return LessonMapScreen(topic: topic);
+          return Animationutils.bottomToTop(LessonMapScreen(topic: topic));
         },
       ),
       GoRoute(
         path: AppRouter.questionScreen,
-        builder: (context, state) {
+        pageBuilder: (context, state) {
           final lesson = state.extra as Lesson;
-          return QuestionScreen(lesson: lesson);
+          return Animationutils.bottomToTop(QuestionScreen(lesson: lesson));
         },
       ),
     ],
