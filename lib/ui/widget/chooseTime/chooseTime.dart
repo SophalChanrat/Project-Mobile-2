@@ -14,7 +14,9 @@ enum TimeOption {
 }
 
 class Choosetime extends StatefulWidget {
-  const Choosetime({super.key});
+  const Choosetime({super.key, this.onTimeSelected});
+  
+  final ValueChanged<Duration>? onTimeSelected;
 
   @override
   State<Choosetime> createState() => _ChoosetimeState();
@@ -26,6 +28,8 @@ class _ChoosetimeState extends State<Choosetime> {
   void selectTime(int index) {
     setState(() {
       selectedTime = TimeOption.values[index];
+      // Notify parent about the selected time
+      widget.onTimeSelected?.call(selectedTime!.timeSpend);
     });
   }
 

@@ -36,7 +36,6 @@ class _TopicCardState extends State<TopicCard> {
     }
   }
 
-  /// Calculate progress based on completed lessons in this topic
   int get completedCount {
     return widget.topic.lessons
         .where((lesson) => completedLessonIds.contains(lesson.lessonId))
@@ -57,25 +56,30 @@ class _TopicCardState extends State<TopicCard> {
     return Colors.grey[300];
   }
 
+  void goToLesson() async {
+    await context.push(AppRouter.lessonScreen, extra: widget.topic);
+    if (mounted) {
+      await _loadCompletedLessons();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Card(
       elevation: 6,
       child: ListTile(
-        onTap: () async {
-          await context.push(AppRouter.lessonScreen, extra: widget.topic);
-          // Reload progress when returning from lesson screen
-          if (mounted) {
-            await _loadCompletedLessons();
-          }
-        },
+        onTap: goToLesson,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadiusGeometry.circular(15),
         ),
         tileColor: Colors.white,
         title: Text(
           widget.topic.topicName,
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Theme.of(context).colorScheme.onSurface),
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 16,
+            color: Theme.of(context).colorScheme.onSurface,
+          ),
         ),
         subtitle: Padding(
           padding: EdgeInsets.all(10),
@@ -88,7 +92,9 @@ class _TopicCardState extends State<TopicCard> {
                   value: percentage,
                   minHeight: 20,
                   backgroundColor: Colors.grey[300],
-                  valueColor: AlwaysStoppedAnimation(Theme.of(context).colorScheme.primary),
+                  valueColor: AlwaysStoppedAnimation(
+                    Theme.of(context).colorScheme.primary,
+                  ),
                 ),
               ),
               Text(

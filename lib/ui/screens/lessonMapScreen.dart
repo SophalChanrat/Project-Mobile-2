@@ -19,14 +19,12 @@ class _LessonMapScreenState extends State<LessonMapScreen> {
 
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.all(40),
+        padding: const EdgeInsets.all(20),
         child: Center(
           child: Column(
             children: [
               Headertopic(title: "Math", point: 100),
-              Padding(
-                padding: const EdgeInsets.all(16),
-              ),
+              SizedBox(height: 20),
               Topicbox(
                 topicName: widget.topic.topicName,
                 lessonNumber: 'Lessons: ${lessons.length}',

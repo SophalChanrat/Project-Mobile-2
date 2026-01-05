@@ -7,18 +7,33 @@ import 'package:app_mvp/ui/widget/chooseTime/chooseTime.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-class Choosetimescreen extends StatelessWidget {
+class Choosetimescreen extends StatefulWidget {
   const Choosetimescreen({super.key, required this.topics});
   final List<Topic> topics;
+
+  @override
+  State<Choosetimescreen> createState() => _ChoosetimescreenState();
+}
+
+class _ChoosetimescreenState extends State<Choosetimescreen> {
+  Duration? selectedTime;
 
   void goToTopic(BuildContext context) async {
     /* 
       UnComment this when Done because this will make the app 
       skip onBoarding and chooseTime when open for the second time
     */
+    
+    if (selectedTime == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Please select a time goal first')),
+      );
+      return;
+    }
 
     await UserRepository.setNotFirstOpen();
-    context.go(AppRouter.topicScreen, extra: topics);
+    await UserRepository.setPlayerPreferTime(selectedTime!);
+    context.go(AppRouter.topicScreen, extra: widget.topics);
   }
 
   @override
@@ -40,7 +55,13 @@ class Choosetimescreen extends StatelessWidget {
         padding: const EdgeInsets.all(40),
         child: Column(
           children: [
-            Choosetime(),
+            Choosetime(
+              onTimeSelected: (duration) {
+                setState(() {
+                  selectedTime = duration;
+                });
+              },
+            ),
             SizedBox(height: 100,),
             Bottominformation(),
             Spacer(),

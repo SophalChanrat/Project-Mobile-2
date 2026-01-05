@@ -1,6 +1,5 @@
 import 'package:app_mvp/models/question/question.dart';
 import 'package:app_mvp/models/question/questionType.dart';
-import 'package:app_mvp/models/submission.dart';
 import 'package:uuid/uuid.dart';
 
 final uuid = Uuid();

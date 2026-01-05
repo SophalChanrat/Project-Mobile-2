@@ -9,7 +9,7 @@ class Onboardingscreen extends StatelessWidget {
   final List<Topic> topics;
 
   void goToChooseTime (BuildContext context) {
-    context.go(AppRouter.chooseTimeScreen, extra: topics);
+    context.push(AppRouter.chooseTimeScreen, extra: topics);
   }
 
   @override
