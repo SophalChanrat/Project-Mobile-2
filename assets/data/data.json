@@ -39,6 +39,14 @@
               "type": "multiple_choice",
               "choices": ["4", "5", "16", "80"],
               "goodChoice": "5"
+            },
+            {
+              "qid": "q-004b",
+              "title": "Drag one of the answers to solve\nx + 3 = 7",
+              "type": "drag_drop",
+              "draggableItem": ["+3", "-3", "x2", "+5"],
+              "correctAnswer": "-3",
+              "numberOfSlots": 2
             }
           ]
         },

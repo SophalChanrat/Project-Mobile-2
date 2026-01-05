@@ -10,6 +10,9 @@ import 'package:app_mvp/models/question/stepByStepQuestion.dart';
 import 'package:app_mvp/models/submission.dart';
 import 'package:app_mvp/ui/widget/button.dart';
 import 'package:app_mvp/ui/widget/question/arrange/arrangeQuestionBody.dart';
+import 'package:app_mvp/ui/widget/question/dragDrop/dragDropBody.dart';
+import 'package:app_mvp/ui/widget/question/multipleChoices/multipleChoicesBody.dart';
+import 'package:app_mvp/ui/widget/question/progressBar.dart';
 import 'package:app_mvp/ui/widget/question/stepQuestion/stepQuestionBody.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -27,6 +30,9 @@ class _QuestionScreenState extends State<QuestionScreen> {
   List<String> selectedSteps = [];
   List<String> currentOrder = [];
   int correctCount = 0;
+  int? selectedChoiceIndex;
+  int totalAttempts = 3;
+  String? selectedDragAnswer;
 
   /// Current submission being built - stored locally, not mutating widget
   late Submission _currentSubmission;
@@ -53,6 +59,8 @@ class _QuestionScreenState extends State<QuestionScreen> {
     final question = currentQuestion;
     
     selectedSteps = [];
+    selectedChoiceIndex = null;
+    selectedDragAnswer = null;
     
     if (question is ArrangeAnswersQuestion) {
       currentOrder = List.from(question.items);
@@ -77,6 +85,18 @@ class _QuestionScreenState extends State<QuestionScreen> {
     });
   }
 
+  void _onChoiceSelected(int index) {
+    setState(() {
+      selectedChoiceIndex = index;
+    });
+  }
+
+  void _onDragAnswerSelected(String value) {
+    setState(() {
+      selectedDragAnswer = value;
+    });
+  }
+
   bool _checkAnswer() {
     final question = currentQuestion;
     
@@ -84,6 +104,12 @@ class _QuestionScreenState extends State<QuestionScreen> {
       return _listEquals(selectedSteps, question.correctStep);
     } else if (question is ArrangeAnswersQuestion) {
       return _listEquals(currentOrder, question.correctOrder);
+    } else if (question is MultipleChoice) {
+      if (selectedChoiceIndex == null) return false;
+      return question.choices[selectedChoiceIndex!] == question.goodChoice;
+    } else if (question is DragDropQuestion) {
+      // Check if selected answer matches the correct answer
+      return selectedDragAnswer == question.correctAnswer;
     }
     return true;
   }
@@ -108,6 +134,12 @@ class _QuestionScreenState extends State<QuestionScreen> {
       responseStr = selectedSteps.join(', ');
     } else if (question is ArrangeAnswersQuestion) {
       responseStr = currentOrder.join(', ');
+    } else if (question is MultipleChoice) {
+      responseStr = selectedChoiceIndex != null 
+          ? question.choices[selectedChoiceIndex!] 
+          : '';
+    } else if (question is DragDropQuestion) {
+      responseStr = selectedDragAnswer ?? '';
     } else {
       responseStr = '';
     }
@@ -213,23 +245,39 @@ class _QuestionScreenState extends State<QuestionScreen> {
 
     return Scaffold(
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: 20),
-              
-              Expanded(
-                child: _buildQuestionContent(),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Progressbar(
+              currentQuestion: currentQuestionIndex + 1,
+              totalQuestions: totalQuestions,
+              totalAttempts: totalAttempts,
+              onClose: () => context.pop(),
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 10),
+                    
+                    Expanded(
+                      child: _buildQuestionContent(),
+                    ),
+                    
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 20.0),
+                      child: Button(
+                        label: isLastQuestion ? "Finish" : "Continue",
+                        action: _onContinue,
+                      ),
+                    ),
+                  ],
+                ),
               ),
-              
-              Button(
-                label: isLastQuestion ? "Finish" : "Continue",
-                action: _onContinue,
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -251,11 +299,17 @@ class _QuestionScreenState extends State<QuestionScreen> {
         onReorder: _onReorder,
       );
     } else if (question is MultipleChoice) {
-      // TODO: Implement MultipleChoice widget
-      return Placeholder(child: Text("Coming Soon"),);
+      return MultipleChoicesBody(
+        question: question,
+        selectedIndex: selectedChoiceIndex,
+        onChoiceSelected: _onChoiceSelected,
+      );
     } else if (question is DragDropQuestion) {
-      // TODO: Implement DragDrop widget
-      return Placeholder(child: Text("Coming Soon"),);
+      return DragDropBody(
+        question: question,
+        selectedAnswer: selectedDragAnswer,
+        onAnswerSelected: _onDragAnswerSelected,
+      );
     }
     return Placeholder(child: Text("Not available"),);
   }
