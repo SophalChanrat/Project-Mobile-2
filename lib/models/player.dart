@@ -7,11 +7,13 @@ class Player {
   final String playerId;
   final Duration preferTimeSpend;
   final List<Submission> submissions;
+  final int totalPoints;
 
   Player ({
     String? playerId,
     required this.preferTimeSpend,
-    required this.submissions
+    required this.submissions,
+    required this.totalPoints,
   }) : playerId = playerId ?? uuid.v4();
 
   factory Player.fromJson(Map<String, dynamic> json) {
@@ -22,6 +24,7 @@ class Player {
       submissions: (json['submissions'] as List)
           .map((submission) => Submission.fromJson(submission))
           .toList(),
+      totalPoints: (json['totalPoints'] as int?) ?? 0,
     );
   }
 
@@ -30,6 +33,7 @@ class Player {
       'playerId': playerId,
       'preferTimeSpend': preferTimeSpend.inMinutes,
       'submissions': submissions.map((submission) => submission.toJson()).toList(),
+      'totalPoints': totalPoints,
     };
   }
 }

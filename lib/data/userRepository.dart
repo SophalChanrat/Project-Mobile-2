@@ -21,7 +21,7 @@ class UserRepository {
   }
   static Future<bool> getFirstOpen() async{
     final prefs = await _instance;
-    return (prefs.getBool(_isOpened) ?? false);
+    return !(prefs.getBool(_isOpened) ?? false);
   }
 
   static Future<void> setPlayerPreferTime(Duration preferTime) async {
@@ -30,12 +30,14 @@ class UserRepository {
       player = Player(
         preferTimeSpend: preferTime,
         submissions: [],
+        totalPoints: 0,
       );
     } else {
       player = Player(
         playerId: player.playerId,
         preferTimeSpend: preferTime,
         submissions: player.submissions,
+        totalPoints: player.totalPoints,
       );
     }
     
@@ -67,18 +69,20 @@ class UserRepository {
     final player = Player(
       preferTimeSpend: preferTimeSpend,
       submissions: [],
+      totalPoints: 0,
     );
     await savePlayer(player);
     await setNotFirstOpen();
     return player;
   }
-  static Future<void> addSubmission(Submission submission) async {
+  static Future<void> addSubmission(Submission submission, {int earnedPoints = 0}) async {
     Player? player = await loadPlayer();
     
     if (player == null) {
       player = Player(
         preferTimeSpend: Duration(minutes: 15),
         submissions: [],
+        totalPoints: 0,
       );
     }
     
@@ -86,6 +90,7 @@ class UserRepository {
       playerId: player.playerId,
       preferTimeSpend: player.preferTimeSpend,
       submissions: [...player.submissions, submission],
+      totalPoints: player.totalPoints + earnedPoints,
     );
     await savePlayer(updatedPlayer);
   }

@@ -1,4 +1,3 @@
-import 'package:app_mvp/data/userRepository.dart';
 import 'package:app_mvp/models/lesson.dart';
 import 'package:app_mvp/router/AppRouter.dart';
 import 'package:app_mvp/ui/widget/lessonMap/lessonButton.dart';
@@ -7,8 +6,18 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class LessonMap extends StatefulWidget {
-  const LessonMap({super.key, required this.lessons});
+  const LessonMap({
+    super.key,
+    required this.lessons,
+    required this.completedLessonIds,
+    this.onPointsEarned,
+    this.onLessonComplete,
+  });
+  
   final List<Lesson> lessons;
+  final Set<String> completedLessonIds;
+  final void Function(int points)? onPointsEarned;
+  final VoidCallback? onLessonComplete;
 
   @override
   State<LessonMap> createState() => _LessonMapState();
@@ -16,34 +25,16 @@ class LessonMap extends StatefulWidget {
 
 class _LessonMapState extends State<LessonMap> {
   int? selectedLessonIndex;
-  Set<String> completedLessonIds = {};
 
-  @override
-  void initState() {
-    super.initState();
-    _loadCompletedLessons();
-  }
-
-  Future<void> _loadCompletedLessons() async {
-    final completed = await UserRepository.getCompletedLessonIds();
-    if (mounted) {
-      setState(() {
-        completedLessonIds = completed;
-      });
-    }
-  }
-
-  /// A lesson is unlocked if it's the first lesson OR the previous lesson is completed
   bool _isLessonLocked(int index) {
-    if (index == 0) return false; // First lesson is always unlocked
+    if (index == 0) return false; 
     final previousLesson = widget.lessons[index - 1];
-    return !completedLessonIds.contains(previousLesson.lessonId);
+    return !widget.completedLessonIds.contains(previousLesson.lessonId);
   }
 
-  /// Check if a lesson is completed
   bool _isLessonCompleted(int index) {
     final lesson = widget.lessons[index];
-    return completedLessonIds.contains(lesson.lessonId);
+    return widget.completedLessonIds.contains(lesson.lessonId);
   }
 
   void _onLessonTap(int index) {
@@ -53,9 +44,12 @@ class _LessonMapState extends State<LessonMap> {
   }
 
   void _startLesson(Lesson lesson) async {
-    await context.push(AppRouter.questionScreen, extra: lesson);
+    final result = await context.push<int>(AppRouter.questionScreen, extra: lesson);
     if (mounted) {
-      await _loadCompletedLessons();
+      widget.onLessonComplete?.call();
+      if (result != null && result > 0) {
+        widget.onPointsEarned?.call(result);
+      }
     }
   }
 

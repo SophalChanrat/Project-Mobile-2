@@ -21,10 +21,10 @@ class StepQuestionBox extends StatelessWidget {
         width: double.infinity,
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.surface,
+          color: isSelected ? Colors.green : Theme.of(context).colorScheme.surface,
           border: Border.all(
             width: 2,
-            color: isSelected ? Colors.green : Colors.grey[300]!,
+            color: isSelected ? Colors.green : Colors.black
           ),
           borderRadius: BorderRadius.circular(12),
         ),
@@ -34,7 +34,7 @@ class StepQuestionBox extends StatelessWidget {
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
-              color: Theme.of(context).colorScheme.onSurface,
+              color: isSelected ? Theme.of(context).colorScheme.surface : Theme.of(context).colorScheme.onSurface,
             ),
           ),
         ),

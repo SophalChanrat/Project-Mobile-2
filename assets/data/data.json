@@ -8,7 +8,7 @@
         {
           "lessonId": "lesson-001",
           "lessonName": "Solving Linear Equations",
-          "maxAttemps": 3,
+          "maxAttemps": 5,
           "point": 100,
           "questions": [
             {
@@ -41,11 +41,129 @@
               "goodChoice": "5"
             },
             {
-              "qid": "q-004b",
+              "qid": "q-005",
               "title": "Drag one of the answers to solve\nx + 3 = 7",
               "type": "drag_drop",
               "draggableItem": ["+3", "-3", "x2", "+5"],
               "correctAnswer": "-3",
+              "numberOfSlots": 2
+            },
+            {
+              "qid": "q-006",
+              "title": "What is x in: 2x - 4 = 10?",
+              "type": "multiple_choice",
+              "choices": ["3", "7", "14", "6"],
+              "goodChoice": "7"
+            },
+            {
+              "qid": "q-007",
+              "title": "Solve: x - 8 = 15. What is x?",
+              "type": "multiple_choice",
+              "choices": ["7", "23", "15", "8"],
+              "goodChoice": "23"
+            },
+            {
+              "qid": "q-008",
+              "title": "Choose the steps to solve",
+              "type": "step_by_step",
+              "content": "5x - 10 = 25",
+              "steps": ["Add 10 to both sides", "Divide by 5", "Subtract 10 from both sides", "Multiply by 5"],
+              "correctStep": ["Add 10 to both sides", "Divide by 5"]
+            },
+            {
+              "qid": "q-009",
+              "title": "What is x in: x/3 = 6?",
+              "type": "multiple_choice",
+              "choices": ["2", "9", "18", "3"],
+              "goodChoice": "18"
+            },
+            {
+              "qid": "q-010",
+              "title": "Arrange the steps to solve x/4 + 2 = 5",
+              "type": "arrange_answer",
+              "items": ["Multiply by 4", "Subtract 2 from both sides", "Get x = 12"],
+              "correctOrder": ["Subtract 2 from both sides", "Multiply by 4", "Get x = 12"]
+            },
+            {
+              "qid": "q-011",
+              "title": "Drag one of the answers to solve\n2x = 16",
+              "type": "drag_drop",
+              "draggableItem": ["÷2", "×2", "+2", "-2"],
+              "correctAnswer": "÷2",
+              "numberOfSlots": 2
+            },
+            {
+              "qid": "q-012",
+              "title": "Solve: 7x + 3 = 24. What is x?",
+              "type": "multiple_choice",
+              "choices": ["3", "21", "4", "7"],
+              "goodChoice": "3"
+            },
+            {
+              "qid": "q-013",
+              "title": "Choose the steps to solve",
+              "type": "step_by_step",
+              "content": "3x + 9 = 30",
+              "steps": ["Subtract 9 from both sides", "Divide by 3", "Add 9 to both sides", "Multiply by 3"],
+              "correctStep": ["Subtract 9 from both sides", "Divide by 3"]
+            },
+            {
+              "qid": "q-014",
+              "title": "What is x in: x + 12 = 20?",
+              "type": "multiple_choice",
+              "choices": ["8", "32", "12", "20"],
+              "goodChoice": "8"
+            },
+            {
+              "qid": "q-015",
+              "title": "Arrange the steps to solve 2x + 5 = 17",
+              "type": "arrange_answer",
+              "items": ["Divide by 2", "Get x = 6", "Subtract 5 from both sides"],
+              "correctOrder": ["Subtract 5 from both sides", "Divide by 2", "Get x = 6"]
+            },
+            {
+              "qid": "q-016",
+              "title": "Drag one of the answers to solve\nx - 5 = 10",
+              "type": "drag_drop",
+              "draggableItem": ["+5", "-5", "×5", "÷5"],
+              "correctAnswer": "+5",
+              "numberOfSlots": 2
+            },
+            {
+              "qid": "q-017",
+              "title": "Solve: 6x = 42. What is x?",
+              "type": "multiple_choice",
+              "choices": ["6", "7", "36", "48"],
+              "goodChoice": "7"
+            },
+            {
+              "qid": "q-018",
+              "title": "Choose the steps to solve",
+              "type": "step_by_step",
+              "content": "x/2 - 3 = 5",
+              "steps": ["Add 3 to both sides", "Multiply by 2", "Subtract 3 from both sides", "Divide by 2"],
+              "correctStep": ["Add 3 to both sides", "Multiply by 2"]
+            },
+            {
+              "qid": "q-019",
+              "title": "What is x in: 10 - x = 3?",
+              "type": "multiple_choice",
+              "choices": ["13", "7", "10", "3"],
+              "goodChoice": "7"
+            },
+            {
+              "qid": "q-020",
+              "title": "Arrange the steps to solve 4x - 8 = 20",
+              "type": "arrange_answer",
+              "items": ["Add 8 to both sides", "Get x = 7", "Divide by 4"],
+              "correctOrder": ["Add 8 to both sides", "Divide by 4", "Get x = 7"]
+            },
+            {
+              "qid": "q-021",
+              "title": "Drag one of the answers to solve\n3x = 21",
+              "type": "drag_drop",
+              "draggableItem": ["÷3", "×3", "+3", "-3"],
+              "correctAnswer": "÷3",
               "numberOfSlots": 2
             }
           ]
@@ -53,25 +171,25 @@
         {
           "lessonId": "lesson-002",
           "lessonName": "Quadratic Basics",
-          "maxAttemps": 3,
+          "maxAttemps": 5,
           "point": 150,
           "questions": [
             {
-              "qid": "q-005",
+              "qid": "q-022",
               "title": "What is 3²?",
               "type": "multiple_choice",
               "choices": ["6", "9", "12", "27"],
               "goodChoice": "9"
             },
             {
-              "qid": "q-006",
+              "qid": "q-023",
               "title": "Arrange the steps to solve x² - 4 = 0",
               "type": "arrange_answer",
               "items": ["Take square root", "Get x = ±2", "Add 4 to both sides"],
               "correctOrder": ["Add 4 to both sides", "Take square root", "Get x = ±2"]
             },
             {
-              "qid": "q-007",
+              "qid": "q-024",
               "title": "Choose the steps to factor",
               "type": "step_by_step",
               "content": "x² + 5x + 6",
@@ -94,29 +212,29 @@
           "point": 80,
           "questions": [
             {
-              "qid": "q-008",
+              "qid": "q-025",
               "title": "What is the formula for area of a rectangle?",
               "type": "multiple_choice",
               "choices": ["length + width", "length × width", "2 × (length + width)", "length²"],
               "goodChoice": "length × width"
             },
             {
-              "qid": "q-009",
+              "qid": "q-026",
               "title": "Arrange steps to find area of triangle",
               "type": "arrange_answer",
               "items": ["Divide by 2", "Multiply base × height", "Get the area"],
               "correctOrder": ["Multiply base × height", "Divide by 2", "Get the area"]
             },
             {
-              "qid": "q-010",
+              "qid": "q-027",
               "title": "Choose the steps to find circle area",
               "type": "step_by_step",
-              "content": "Circle with radius = 5",
+              "content": "radius = 5",
               "steps": ["Square the radius (5² = 25)", "Multiply by π", "Add π to radius", "Divide by 2"],
               "correctStep": ["Square the radius (5² = 25)", "Multiply by π"]
             },
             {
-              "qid": "q-011",
+              "qid": "q-028",
               "title": "What is the area of a square with side 6?",
               "type": "multiple_choice",
               "choices": ["12", "24", "36", "6"],
@@ -131,24 +249,24 @@
           "point": 80,
           "questions": [
             {
-              "qid": "q-012",
+              "qid": "q-029",
               "title": "Arrange steps for rectangle perimeter",
               "type": "arrange_answer",
               "items": ["Add length + width", "Multiply by 2", "Get the perimeter"],
               "correctOrder": ["Add length + width", "Multiply by 2", "Get the perimeter"]
             },
             {
-              "qid": "q-013",
+              "qid": "q-030",
               "title": "What is the perimeter of a square with side 5?",
               "type": "multiple_choice",
               "choices": ["10", "15", "20", "25"],
               "goodChoice": "20"
             },
             {
-              "qid": "q-014",
+              "qid": "q-031",
               "title": "Choose steps for square perimeter",
               "type": "step_by_step",
-              "content": "Square with side = 8",
+              "content": "side = 8",
               "steps": ["Multiply side by 4", "Add all four sides", "Divide by 4", "Square the side"],
               "correctStep": ["Multiply side by 4"]
             }
@@ -164,25 +282,25 @@
         {
           "lessonId": "lesson-005",
           "lessonName": "Adding Fractions",
-          "maxAttemps": 3,
+          "maxAttemps": 5,
           "point": 120,
           "questions": [
             {
-              "qid": "q-015",
+              "qid": "q-032",
               "title": "What is 1/2 + 1/2?",
               "type": "multiple_choice",
               "choices": ["1/4", "2/4", "1", "2"],
               "goodChoice": "1"
             },
             {
-              "qid": "q-016",
+              "qid": "q-033",
               "title": "Arrange steps to add 1/4 + 2/4",
               "type": "arrange_answer",
               "items": ["Keep denominator same", "Add numerators: 1+2=3", "Result is 3/4"],
               "correctOrder": ["Keep denominator same", "Add numerators: 1+2=3", "Result is 3/4"]
             },
             {
-              "qid": "q-017",
+              "qid": "q-034",
               "title": "Choose steps to add fractions",
               "type": "step_by_step",
               "content": "1/3 + 1/6",
@@ -190,14 +308,14 @@
               "correctStep": ["Find common denominator (6)", "Convert 1/3 to 2/6", "Add: 2/6 + 1/6 = 3/6"]
             },
             {
-              "qid": "q-018",
+              "qid": "q-035",
               "title": "What is 3/4 simplified from 6/8?",
               "type": "multiple_choice",
               "choices": ["1/2", "2/3", "3/4", "4/5"],
               "goodChoice": "3/4"
             },
             {
-              "qid": "q-019",
+              "qid": "q-036",
               "title": "Arrange steps to simplify 6/8",
               "type": "arrange_answer",
               "items": ["Find GCD of 6 and 8 (which is 2)", "Divide both by GCD", "Result is 3/4"],

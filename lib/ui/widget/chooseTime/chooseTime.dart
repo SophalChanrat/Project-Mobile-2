@@ -1,6 +1,5 @@
 import 'package:app_mvp/ui/widget/chooseTime/timeTile.dart';
 import 'package:flutter/material.dart';
-// import 'package:app_mvp/ui/widget/timeTile.dart';
 
 enum TimeOption {
   casual(name: "Casual", timeSpend: Duration(minutes: 5)),
@@ -28,7 +27,6 @@ class _ChoosetimeState extends State<Choosetime> {
   void selectTime(int index) {
     setState(() {
       selectedTime = TimeOption.values[index];
-      // Notify parent about the selected time
       widget.onTimeSelected?.call(selectedTime!.timeSpend);
     });
   }

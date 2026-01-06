@@ -26,25 +26,48 @@ class QuestionScreen extends StatefulWidget {
 }
 
 class _QuestionScreenState extends State<QuestionScreen> {
+  // Use for Navigating between questions
   int currentQuestionIndex = 0;
+  // Use for track user attempts
+  int totalAttempts = 0;
+  // Use for scoring systems
+  int correctCount = 0;
+  int incorrectCount = 0;
+  /* Use for store answer in each type of questions
+    - selectedSteps use for StepbyStep question
+    - currentOrder use for Arrange question
+    - selectedChoiceIndex use for MultipleChoices question
+    - selectedDragAnswer use for Drag and Drop question
+  */
   List<String> selectedSteps = [];
   List<String> currentOrder = [];
-  int correctCount = 0;
   int? selectedChoiceIndex;
-  int totalAttempts = 3;
   String? selectedDragAnswer;
 
-  /// Current submission being built - stored locally, not mutating widget
-  late Submission _currentSubmission;
+  late final Submission _currentSubmission;
+  
 
   Question get currentQuestion => widget.lesson.questions[currentQuestionIndex];
-  bool get isLastQuestion => currentQuestionIndex >= widget.lesson.questions.length - 1;
+  bool get isLastQuestion =>
+      currentQuestionIndex >= widget.lesson.questions.length - 1;
   int get totalQuestions => widget.lesson.questions.length;
-  
+  bool get hasAnswer {
+    final question = currentQuestion;
+    if (question is StepByStepQuestion) return selectedSteps.isNotEmpty;
+    if (question is ArrangeAnswersQuestion) return true;
+    if (question is MultipleChoice) return selectedChoiceIndex != null;
+    if (question is DragDropQuestion) return selectedDragAnswer != null;
+    return false;
+  }
+
   @override
   void initState() {
     super.initState();
-    // Create submission locally - don't mutate widget.lesson
+    _initialize();
+  }
+
+  Future<void> _initialize() async {
+    totalAttempts = widget.lesson.maxAttempts;
     _currentSubmission = Submission(
       lessonId: widget.lesson.lessonId,
       date: DateTime.now(),
@@ -57,17 +80,18 @@ class _QuestionScreenState extends State<QuestionScreen> {
 
   void _initializeQuestionState() {
     final question = currentQuestion;
-    
+
     selectedSteps = [];
     selectedChoiceIndex = null;
     selectedDragAnswer = null;
-    
+
     if (question is ArrangeAnswersQuestion) {
       currentOrder = List.from(question.items);
     } else {
       currentOrder = [];
     }
   }
+
 
   void _onStepTap(String step) {
     setState(() {
@@ -99,22 +123,21 @@ class _QuestionScreenState extends State<QuestionScreen> {
 
   bool _checkAnswer() {
     final question = currentQuestion;
-    
+
     if (question is StepByStepQuestion) {
-      return _listEquals(selectedSteps, question.correctStep);
+      return compareList(selectedSteps, question.correctStep);
     } else if (question is ArrangeAnswersQuestion) {
-      return _listEquals(currentOrder, question.correctOrder);
+      return compareList(currentOrder, question.correctOrder);
     } else if (question is MultipleChoice) {
       if (selectedChoiceIndex == null) return false;
       return question.choices[selectedChoiceIndex!] == question.goodChoice;
     } else if (question is DragDropQuestion) {
-      // Check if selected answer matches the correct answer
       return selectedDragAnswer == question.correctAnswer;
     }
     return true;
   }
-  
-  bool _listEquals(List<String> a, List<String> b) {
+
+  bool compareList(List<String> a, List<String> b) {
     if (a.length != b.length) return false;
     for (int i = 0; i < a.length; i++) {
       if (a[i] != b[i]) return false;
@@ -122,38 +145,80 @@ class _QuestionScreenState extends State<QuestionScreen> {
     return true;
   }
 
-  void _onContinue() {
+  void onContinue() {
+    if (!_validateAttempts()) return;
+
     final isCorrect = _checkAnswer();
+    _updateScore(isCorrect);
+    _saveAnswer(isCorrect);
+    _showFeedback(isCorrect);
     if (isCorrect) {
-      correctCount++;
+      _handleNextStep();
     }
-    
+  }
+
+  bool _validateAttempts() {
+    if (totalAttempts <= 0) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('No attempts left for this lesson.'),
+          backgroundColor: Colors.red,
+          duration: Duration(milliseconds: 800),
+        ),
+      );
+      Future.delayed(const Duration(milliseconds: 800), () {
+        if (mounted) {
+          context.pop();
+        }
+      });
+      return false;
+    }
+    return true;
+  }
+
+  void _updateScore(bool isCorrect) {
+    setState(() {
+      if (isCorrect) {
+        correctCount++;
+      } else {
+        incorrectCount++;
+        totalAttempts--;
+      }
+    });
+  }
+
+  String _getCurrentResponse() {
     final question = currentQuestion;
-    String responseStr;
+
     if (question is StepByStepQuestion) {
-      responseStr = selectedSteps.join(', ');
+      return selectedSteps.join(', ');
     } else if (question is ArrangeAnswersQuestion) {
-      responseStr = currentOrder.join(', ');
+      return currentOrder.join(', ');
     } else if (question is MultipleChoice) {
-      responseStr = selectedChoiceIndex != null 
-          ? question.choices[selectedChoiceIndex!] 
+      return selectedChoiceIndex != null
+          ? question.choices[selectedChoiceIndex!]
           : '';
     } else if (question is DragDropQuestion) {
-      responseStr = selectedDragAnswer ?? '';
-    } else {
-      responseStr = '';
+      return selectedDragAnswer ?? '';
     }
-    
-    _currentSubmission.answers.add(Answer(
-      questionId: question.qid,
-      response: responseStr,
-      attempsCount: 1,
-      feedback: FeedbackModel(
-        explaination: isCorrect ? 'Correct!' : 'Incorrect answer',
-        hint: isCorrect ? '' : 'Try reviewing the material',
+    return '';
+  }
+
+  void _saveAnswer(bool isCorrect) {
+    _currentSubmission.answers.add(
+      Answer(
+        questionId: currentQuestion.qid,
+        response: _getCurrentResponse(),
+        attempsCount: isCorrect ? 0 : 1,
+        feedback: FeedbackModel(
+          explaination: isCorrect ? 'Correct!' : 'Incorrect answer',
+          hint: isCorrect ? '' : 'Try reviewing the material',
+        ),
       ),
-    ));
-    
+    );
+  }
+
+  void _showFeedback(bool isCorrect) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(isCorrect ? '✓ Correct!' : '✗ Incorrect'),
@@ -161,6 +226,13 @@ class _QuestionScreenState extends State<QuestionScreen> {
         duration: Duration(milliseconds: 600),
       ),
     );
+  }
+
+  void _handleNextStep() {
+    if (totalAttempts <= 0) {
+      _saveSubmissionAndComplete();
+      return;
+    }
 
     if (isLastQuestion) {
       _saveSubmissionAndComplete();
@@ -175,7 +247,15 @@ class _QuestionScreenState extends State<QuestionScreen> {
   Future<void> _saveSubmissionAndComplete() async {
     final percentage = ((correctCount / totalQuestions) * 100).round();
 
-    // Create completed submission using data from lesson's current submission
+    final basePoints = widget.lesson.point;
+    final maxAttempts = widget.lesson.maxAttempts;
+    final attemptsUsed = incorrectCount;
+    final penaltyPerAttempt = (basePoints / maxAttempts).ceil();
+    int earnedPoints = basePoints - (attemptsUsed * penaltyPerAttempt);
+    if (earnedPoints < 0) {
+      earnedPoints = 0;
+    }
+
     final completedSubmission = Submission(
       lessonId: _currentSubmission.lessonId,
       date: _currentSubmission.date,
@@ -183,20 +263,22 @@ class _QuestionScreenState extends State<QuestionScreen> {
       isComplete: true,
       answers: _currentSubmission.answers,
     );
-    
-    await UserRepository.addSubmission(completedSubmission);
-    
+
+    await UserRepository.addSubmission(
+      completedSubmission,
+      earnedPoints: earnedPoints,
+    );
+
     if (!mounted) return;
-    _showCompletionDialog(percentage);
+    _showCompletionDialog(percentage, earnedPoints);
   }
 
-  void _showCompletionDialog(int percentage) {
-    
+  void _showCompletionDialog(int percentage, int earnedPoints) {
     showDialog(
       context: context,
       barrierDismissible: false,
       builder: (dialogContext) => AlertDialog(
-        title: Text('Lesson Complete! 🎉'),
+        title: Text('Lesson Complete!'),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -207,14 +289,14 @@ class _QuestionScreenState extends State<QuestionScreen> {
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 8),
-            Text('Points earned: +${widget.lesson.point}'),
+            Text('Points earned: +$earnedPoints'),
           ],
         ),
         actions: [
           TextButton(
             onPressed: () {
-              Navigator.of(dialogContext).pop(); // Close dialog
-              context.pop(); // Go back to lesson map using screen's context
+              Navigator.of(dialogContext).pop();
+              context.pop(earnedPoints);
             },
             child: Text('Continue'),
           ),
@@ -225,24 +307,6 @@ class _QuestionScreenState extends State<QuestionScreen> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.lesson.questions.isEmpty) {
-      return Scaffold(
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text('No questions available for this lesson'),
-              SizedBox(height: 20),
-              Button(
-                label: 'Go Back',
-                action: () => context.pop(),
-              ),
-            ],
-          ),
-        ),
-      );
-    }
-
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -261,16 +325,14 @@ class _QuestionScreenState extends State<QuestionScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const SizedBox(height: 10),
-                    
-                    Expanded(
-                      child: _buildQuestionContent(),
-                    ),
-                    
+
+                    Expanded(child: _buildQuestionContent()),
+
                     Padding(
                       padding: const EdgeInsets.only(bottom: 20.0),
                       child: Button(
                         label: isLastQuestion ? "Finish" : "Continue",
-                        action: _onContinue,
+                        action: hasAnswer ? onContinue : null,
                       ),
                     ),
                   ],
@@ -311,6 +373,6 @@ class _QuestionScreenState extends State<QuestionScreen> {
         onAnswerSelected: _onDragAnswerSelected,
       );
     }
-    return Placeholder(child: Text("Not available"),);
+    return Placeholder(child: Text("Not available"));
   }
 }

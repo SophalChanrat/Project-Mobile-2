@@ -1,3 +1,4 @@
+import 'package:app_mvp/data/userRepository.dart';
 import 'package:app_mvp/models/topic.dart';
 import 'package:app_mvp/ui/widget/lessonMap/lessonMap.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +14,32 @@ class LessonMapScreen extends StatefulWidget {
 }
 
 class _LessonMapScreenState extends State<LessonMapScreen> {
+  int totalPoints = 0;
+  Set<String> completedLessonIds = {};
+
+  @override
+  void initState() {
+    super.initState();
+    _loadData();
+  }
+
+  Future<void> _loadData() async {
+    final player = await UserRepository.loadPlayer();
+    final completed = await UserRepository.getCompletedLessonIds();
+    if (mounted) {
+      setState(() {
+        totalPoints = player?.totalPoints ?? 0;
+        completedLessonIds = completed;
+      });
+    }
+  }
+
+  void _onPointsEarned(int points) {
+    setState(() {
+      totalPoints += points;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final lessons = widget.topic.lessons;
@@ -23,7 +50,7 @@ class _LessonMapScreenState extends State<LessonMapScreen> {
         child: Center(
           child: Column(
             children: [
-              Headertopic(title: "Math", point: 100),
+              Headertopic(title: "Math", point: totalPoints),
               SizedBox(height: 20),
               Topicbox(
                 topicName: widget.topic.topicName,
@@ -31,7 +58,12 @@ class _LessonMapScreenState extends State<LessonMapScreen> {
                 lessonName: lessons.isNotEmpty ? lessons[0].lessonName : '',
               ),
               SizedBox(height: 20),
-              LessonMap(lessons: lessons),
+              LessonMap(
+                lessons: lessons,
+                completedLessonIds: completedLessonIds,
+                onPointsEarned: _onPointsEarned,
+                onLessonComplete: _loadData,
+              ),
             ],
           ),
         ),

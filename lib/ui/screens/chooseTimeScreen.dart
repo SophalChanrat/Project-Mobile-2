@@ -19,10 +19,6 @@ class _ChoosetimescreenState extends State<Choosetimescreen> {
   Duration? selectedTime;
 
   void goToTopic(BuildContext context) async {
-    /* 
-      UnComment this when Done because this will make the app 
-      skip onBoarding and chooseTime when open for the second time
-    */
     
     if (selectedTime == null) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -33,6 +29,7 @@ class _ChoosetimescreenState extends State<Choosetimescreen> {
 
     await UserRepository.setNotFirstOpen();
     await UserRepository.setPlayerPreferTime(selectedTime!);
+    if (!mounted) return;
     context.go(AppRouter.topicScreen, extra: widget.topics);
   }
 

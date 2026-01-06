@@ -1,50 +1,31 @@
-import 'package:app_mvp/data/userRepository.dart';
 import 'package:app_mvp/models/topic.dart';
 import 'package:app_mvp/router/AppRouter.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-class TopicCard extends StatefulWidget {
+class TopicCard extends StatelessWidget {
   const TopicCard({
     super.key,
     required this.topic,
+    required this.completedLessonIds,
     this.icon = Icons.emoji_events,
+    this.onReturn,
   });
 
   final Topic topic;
+  final Set<String> completedLessonIds;
   final IconData icon;
-
-  @override
-  State<TopicCard> createState() => _TopicCardState();
-}
-
-class _TopicCardState extends State<TopicCard> {
-  Set<String> completedLessonIds = {};
-
-  @override
-  void initState() {
-    super.initState();
-    _loadCompletedLessons();
-  }
-
-  Future<void> _loadCompletedLessons() async {
-    final completed = await UserRepository.getCompletedLessonIds();
-    if (mounted) {
-      setState(() {
-        completedLessonIds = completed;
-      });
-    }
-  }
+  final VoidCallback? onReturn;
 
   int get completedCount {
-    return widget.topic.lessons
+    return topic.lessons
         .where((lesson) => completedLessonIds.contains(lesson.lessonId))
         .length;
   }
 
   double get percentage {
-    if (widget.topic.lessons.isEmpty) return 0.0;
-    return completedCount / widget.topic.lessons.length;
+    if (topic.lessons.isEmpty) return 0.0;
+    return completedCount / topic.lessons.length;
   }
 
   String get percentageText => "${(percentage * 100).round()} %";
@@ -56,11 +37,9 @@ class _TopicCardState extends State<TopicCard> {
     return Colors.grey[300];
   }
 
-  void goToLesson() async {
-    await context.push(AppRouter.lessonScreen, extra: widget.topic);
-    if (mounted) {
-      await _loadCompletedLessons();
-    }
+  void _goToLesson(BuildContext context) async {
+    await context.push(AppRouter.lessonScreen, extra: topic);
+    onReturn?.call();
   }
 
   @override
@@ -68,13 +47,13 @@ class _TopicCardState extends State<TopicCard> {
     return Card(
       elevation: 6,
       child: ListTile(
-        onTap: goToLesson,
+        onTap: () => _goToLesson(context),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadiusGeometry.circular(15),
         ),
         tileColor: Colors.white,
         title: Text(
-          widget.topic.topicName,
+          topic.topicName,
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 16,
