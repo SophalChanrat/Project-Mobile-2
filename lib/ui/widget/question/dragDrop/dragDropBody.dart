@@ -32,7 +32,6 @@ class DragDropBody extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 32),
-        // Drop targets row - all show the same selected answer
         Center(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -55,7 +54,7 @@ class DragDropBody extends StatelessWidget {
                     if (index > 0) const SizedBox(width: 10),
                     DropTarget(
                       targetKey: 'slot_$index',
-                      droppedValue: selectedAnswer, // Same answer in all slots
+                      droppedValue: selectedAnswer,
                       onAccept: (_, value) => onAnswerSelected(value),
                     ),
                   ],
@@ -64,7 +63,6 @@ class DragDropBody extends StatelessWidget {
             ),
           ),
         const SizedBox(height: 40),
-        // Draggable choices
         Center(
           child: DragDropChoices(
             choices: question.draggableItem,

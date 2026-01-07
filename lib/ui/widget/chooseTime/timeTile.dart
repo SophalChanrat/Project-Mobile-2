@@ -37,7 +37,7 @@ class TimeRow extends StatelessWidget {
         timeOption.name,
         style: TextStyle(
           decoration: TextDecoration.none,
-          color: Theme.of(context).colorScheme.onSurface,
+          color: isSelected ? Theme.of(context).colorScheme.surface : Theme.of(context).colorScheme.onSurface,
           fontSize: 14,
           fontWeight: FontWeight.bold,
         ),
@@ -46,7 +46,7 @@ class TimeRow extends StatelessWidget {
         "${timeOption.timeSpend.inMinutes}min/ day",
         style: TextStyle(
           decoration: TextDecoration.none,
-          color: Theme.of(context).colorScheme.onSurface,
+          color: isSelected ? Theme.of(context).colorScheme.surface : Theme.of(context).colorScheme.onSurface,
           fontSize: 14,
           fontWeight: FontWeight.w500,
         ),

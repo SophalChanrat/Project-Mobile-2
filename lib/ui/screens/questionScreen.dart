@@ -1,6 +1,5 @@
 import 'package:app_mvp/data/userRepository.dart';
 import 'package:app_mvp/models/answer.dart';
-import 'package:app_mvp/models/feedback.dart';
 import 'package:app_mvp/models/lesson.dart';
 import 'package:app_mvp/models/question/arrangeAnswersQuestion.dart';
 import 'package:app_mvp/models/question/dragDropQuestion.dart';
@@ -146,8 +145,6 @@ class _QuestionScreenState extends State<QuestionScreen> {
   }
 
   void onContinue() {
-    if (!_validateAttempts()) return;
-
     final isCorrect = _checkAnswer();
     _updateScore(isCorrect);
     _saveAnswer(isCorrect);
@@ -157,24 +154,6 @@ class _QuestionScreenState extends State<QuestionScreen> {
     }
   }
 
-  bool _validateAttempts() {
-    if (totalAttempts <= 0) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('No attempts left for this lesson.'),
-          backgroundColor: Colors.red,
-          duration: Duration(milliseconds: 800),
-        ),
-      );
-      Future.delayed(const Duration(milliseconds: 800), () {
-        if (mounted) {
-          context.pop();
-        }
-      });
-      return false;
-    }
-    return true;
-  }
 
   void _updateScore(bool isCorrect) {
     setState(() {
@@ -183,6 +162,9 @@ class _QuestionScreenState extends State<QuestionScreen> {
       } else {
         incorrectCount++;
         totalAttempts--;
+        if(totalAttempts == 0){
+          _showNoAttemptsDialog();
+        }
       }
     });
   }
@@ -210,10 +192,6 @@ class _QuestionScreenState extends State<QuestionScreen> {
         questionId: currentQuestion.qid,
         response: _getCurrentResponse(),
         attempsCount: isCorrect ? 0 : 1,
-        feedback: FeedbackModel(
-          explaination: isCorrect ? 'Correct!' : 'Incorrect answer',
-          hint: isCorrect ? '' : 'Try reviewing the material',
-        ),
       ),
     );
   }
@@ -274,31 +252,59 @@ class _QuestionScreenState extends State<QuestionScreen> {
   }
 
   void _showCompletionDialog(int percentage, int earnedPoints) {
+    _showDialog(
+      title: 'Lesson Complete!',
+      buttonTitle: 'Continue',
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text('You completed "${widget.lesson.lessonName}"!'),
+          SizedBox(height: 16),
+          Text(
+            'Score: $correctCount / $totalQuestions ($percentage%)',
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
+          SizedBox(height: 8),
+          Text('Points earned: +$earnedPoints'),
+        ],
+      ),
+      onContinue: () => context.pop(earnedPoints),
+    );
+  }
+
+  void _showNoAttemptsDialog() {
+    _showDialog(
+      title: 'No Attempts Left',
+      buttonTitle: 'Exit',
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text('You have no attempts left for this lesson.'),
+        ],
+      ),
+      onContinue: () => context.pop(),
+    );
+  }
+
+  void _showDialog({
+    required String title,
+    required String buttonTitle,
+    required Widget content,
+    required VoidCallback onContinue,
+  }) {
     showDialog(
       context: context,
       barrierDismissible: false,
       builder: (dialogContext) => AlertDialog(
-        title: Text('Lesson Complete!'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text('You completed "${widget.lesson.lessonName}"!'),
-            SizedBox(height: 16),
-            Text(
-              'Score: $correctCount / $totalQuestions ($percentage%)',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 8),
-            Text('Points earned: +$earnedPoints'),
-          ],
-        ),
+        title: Text(title),
+        content: content,
         actions: [
           TextButton(
             onPressed: () {
               Navigator.of(dialogContext).pop();
-              context.pop(earnedPoints);
+              onContinue();
             },
-            child: Text('Continue'),
+            child: Text(buttonTitle),
           ),
         ],
       ),

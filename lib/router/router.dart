@@ -15,22 +15,26 @@ GoRouter router({
 }) {
   return GoRouter(
     initialLocation: isFirstTime ? AppRouter.onBoardingScreen : AppRouter.topicScreen,
+    initialExtra: topics,
     routes: [
       GoRoute(
         path: AppRouter.onBoardingScreen,
         pageBuilder: (context, state) {
-          return Animationutils.leftToRight(Onboardingscreen(topics: topics));
+          final topics = state.extra as List<Topic>;
+          return Animationutils.leftToRight(Onboardingscreen(topics: topics,));
         },
       ),
       GoRoute(
         path: AppRouter.chooseTimeScreen,
         pageBuilder: (context, state) {
-          return Animationutils.leftToRight(Choosetimescreen(topics: topics));
+          final topics = state.extra as List<Topic>;
+          return Animationutils.leftToRight(Choosetimescreen(topics: topics,));
         },
       ),
       GoRoute(
         path: AppRouter.topicScreen,
         pageBuilder: (context, state) {
+          final topics = state.extra as List<Topic>;
           return Animationutils.rightToLeft(Topicscreen(topics: topics));
         },
       ),

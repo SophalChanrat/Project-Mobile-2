@@ -21,10 +21,10 @@ class StepQuestionBox extends StatelessWidget {
         width: double.infinity,
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
-          color: isSelected ? Colors.green : Theme.of(context).colorScheme.surface,
+          color: isSelected ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.surface,
           border: Border.all(
             width: 2,
-            color: isSelected ? Colors.green : Colors.black
+            color: isSelected ? Theme.of(context).colorScheme.primary : Colors.black
           ),
           borderRadius: BorderRadius.circular(12),
         ),
